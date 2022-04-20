@@ -5,6 +5,7 @@ const GRID_ROWS = 30;
 const GRID_COLS = 30;
 
 export const Grid: React.FC = () => {
+  const [alive, setAlive] = useState(false);
   const [grid, setGrid] = useState(() => {
     const rows = [];
     for (let i = 0; i < GRID_ROWS; i++) {
@@ -13,10 +14,16 @@ export const Grid: React.FC = () => {
     return rows;
   });
 
+  const handleClick = () => {};
+
   const printGrid = () => {
     return grid.map((rows, i) =>
       rows.map((col, k) => (
-        <div key={`${i}${k}`} className={`grid__cell ${i}`} />
+        <div
+          key={`${i}${k}`}
+          className={`grid__cell ${i}`}
+          onClick={handleClick}
+        />
       ))
     );
   };

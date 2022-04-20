@@ -1,10 +1,10 @@
 import './App.css';
-import { Grid } from './Grid/Grid';
+import { GridCopy } from './Grid/GridCopy';
 
 function App() {
   return (
     <div className="App">
-      <Grid></Grid>
+      <GridCopy></GridCopy>
     </div>
   );
 }
