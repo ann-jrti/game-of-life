@@ -1,5 +1,6 @@
 import './grid.styles.scss';
 import React, { useEffect, useId, useState, useCallback, useRef } from 'react';
+import { Modal } from '@mui/material/';
 
 const GRID_ROWS = 20;
 const GRID_COLS = 20;
@@ -15,7 +16,6 @@ const NEIGHBORS = {
 };
 
 export const GridCopy = () => {
-  const [refresh, setRefresh] = useState(false);
   const [start, setStart] = useState(false);
   const [speed, setSpeed] = useState(1000);
   const [grid, setGrid] = useState([]);
@@ -59,11 +59,6 @@ export const GridCopy = () => {
     });
   }
 
-  const handleStart = (e) => {
-    start ? setStart(false) : setStart(true);
-    console.log('click start');
-  };
-
   useEffect(() => {
     if (start) {
       console.log('keys', Object.values(NEIGHBORS));
@@ -73,12 +68,12 @@ export const GridCopy = () => {
         runSimulation();
       }, speed);
     }
-  }, [start]);
+  }, [start, speed]);
 
   const handleClick = (i, k) => {
     const value = `${i}${k}`;
     grid[i][k] ? (grid[i][k] = 0) : (grid[i][k] = 1);
-    refresh ? setRefresh(false) : setRefresh(true);
+    setGrid([...grid]);
   };
 
   const printGrid = () => {
@@ -87,16 +82,25 @@ export const GridCopy = () => {
         <div
           key={`${i}${k}`}
           style={{ backgroundColor: grid[i][k] ? 'blue' : 'white' }}
-          className={`grid__cell ${i}`}
+          className={`grid__cell`}
           onClick={() => handleClick(i, k)}
         />
       ))
     );
   };
 
+  const speedControl = () => {
+    setSpeed(speed - 200);
+  };
   return (
     <>
-      <button onClick={handleStart}>{start ? 'stop' : 'start life'}</button>
+      <div style={{ display: 'flex', flexDirection: 'column', width: '6rem' }}>
+        <button onClick={() => setStart(!start)}>
+          {start ? 'stop' : 'start life'}
+        </button>
+        <button onClick={speedControl}>+ speed</button>
+      </div>
+
       <main
         style={{ gridTemplateColumns: `repeat(${GRID_COLS}, 20px)` }}
         className="grid__container"
